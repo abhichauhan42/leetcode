@@ -1,24 +1,25 @@
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
 
 class MyStack {
 
-    private Stack<Integer> s1;
-    private Stack<Integer> s2;
+    private Queue<Integer> q1;
+    private Queue<Integer> q2;
 
     public MyStack() {
-        s1 = new Stack<>();
-        s2 = new Stack<>();
+        q1 = new LinkedList<>();
+        q2 = new LinkedList<>();
     }
 
     public boolean empty() {
-        return s1.isEmpty() && s2.isEmpty();
+        return q1.isEmpty() && q2.isEmpty();
     }
 
     public void push(int x) {
-        if (!s1.isEmpty()) {
-            s1.push(x);
+        if (!q1.isEmpty()) {
+            q1.add(x);
         } else {
-            s2.push(x);
+            q2.add(x);
         }
     }
 
@@ -26,21 +27,19 @@ class MyStack {
         if (empty()) {
             return -1;
         }
-        int top;
-        if (!s1.isEmpty()) {
-            top = s1.pop();
-            if (s1.isEmpty()) {
-                while (!s2.isEmpty()) {
-                    s1.push(s2.pop());
-                }
+        int top = 0; // Initialize top to a default value
+        if (!q1.isEmpty()) {
+            while (q1.size() > 1) {
+                top = q1.remove();
+                q2.add(top);
             }
+            top = q1.remove();
         } else {
-            top = s2.pop();
-            if (s2.isEmpty()) {
-                while (!s1.isEmpty()) {
-                    s2.push(s1.pop());
-                }
+            while (q2.size() > 1) {
+                top = q2.remove();
+                q1.add(top);
             }
+            top = q2.remove();
         }
         return top;
     }
@@ -49,11 +48,17 @@ class MyStack {
         if (empty()) {
             return -1;
         }
-        int top;
-        if (!s1.isEmpty()) {
-            top = s1.peek();
+        int top = 0; // Initialize top to a default value
+        if (!q1.isEmpty()) {
+            while (!q1.isEmpty()) {
+                top = q1.remove();
+                q2.add(top);
+            }
         } else {
-            top = s2.peek();
+            while (!q2.isEmpty()) {
+                top = q2.remove();
+                q1.add(top);
+            }
         }
         return top;
     }
