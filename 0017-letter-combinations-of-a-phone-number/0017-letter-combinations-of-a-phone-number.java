@@ -25,7 +25,6 @@ class Solution {
     }
 
     public List<String> letterCombinations(String digits) {
-        Solution obj = new Solution(); 
-        return obj.combinations(digits, 0, ""); 
+        return combinations(digits, 0, ""); 
     }
 }
