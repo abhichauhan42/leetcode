@@ -1,32 +1,30 @@
 class Solution {
     public int maxVowels(String s, int k) {
-        int currentvowel=0;
-        
-        String temp="";
-        
-        for(int i=0;i<k;i++){
-            if(s.charAt(i)=='a' || s.charAt(i)=='e' || s.charAt(i)=='i' || s.charAt(i)=='o' || s.charAt(i)=='u'){
-                temp+=s.charAt(i);
-                currentvowel++;
-            }
-            else{
-                temp+=s.charAt(i);
+        int totalVowelsInWindow = 0, 
+            stringLength = s.length();
+        for (int i = 0; i < k; ++i) {
+            if (isVowel(s.charAt(i))) {
+                ++totalVowelsInWindow;
             }
         }
-        
-        int maxvowel=currentvowel;
-        
-        for(int i=k;i<s.length();i++){
-            temp+=s.charAt(i)-s.charAt(i-k);
-            if(s.charAt(i-k)=='a' || s.charAt(i-k)=='e' || s.charAt(i-k)=='i' || s.charAt(i-k)=='o' || s.charAt(i-k)=='u'){
-                currentvowel--;    
+        int maxVowels = totalVowelsInWindow;
+        for (int i = k; i < stringLength; ++i) {
+            if (isVowel(s.charAt(i))) {
+                ++totalVowelsInWindow;
             }
-            if(s.charAt(i)=='a' || s.charAt(i)=='e' || s.charAt(i)=='i' || s.charAt(i)=='o' || s.charAt(i)=='u'){ 
-                currentvowel++;
+            if (isVowel(s.charAt(i - k))) {
+                --totalVowelsInWindow;
+            }
+            maxVowels = Math.max(maxVowels, totalVowelsInWindow);
         }
-            maxvowel=Math.max(maxvowel,currentvowel);
-        
+        return maxVowels;
     }
-        return maxvowel;
+
+    private boolean isVowel(char character) {
+        return character == 'a' || 
+               character == 'e' || 
+               character == 'i' || 
+               character == 'o' || 
+               character == 'u';
     }
 }
