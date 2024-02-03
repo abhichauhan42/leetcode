@@ -1,22 +1,19 @@
 class Solution {
     
-    public List<List<Integer>> sets(int[] nums,int i,ArrayList<Integer> list){
-        ArrayList<List<Integer>> mainlist=new ArrayList<>();
-        if(i==nums.length){
-            mainlist.add(new ArrayList<>(list));
-            return mainlist;
-        }
-        
+    public List<List<Integer>> backtrack(List<List<Integer>> mainlist,ArrayList<Integer> list,int[] nums,int start){
+        mainlist.add(new ArrayList<>(list));
+
+        for(int i=start;i<nums.length;i++){
         //for yes choice
         list.add(nums[i]);
-        mainlist.addAll(sets(nums,i+1,list));
+        backtrack(mainlist,list,nums,i+1);
         list.remove(list.size()-1);
-        //for No choice
-        mainlist.addAll(sets(nums,i+1,list));
-        
+        }
         return mainlist;
     }
     public List<List<Integer>> subsets(int[] nums) {
-        return sets(nums,0,new ArrayList<>());
+       List<List<Integer>> mainlist=new ArrayList<>();
+        backtrack(mainlist,new ArrayList<>(),nums,0);
+        return mainlist;
     }
 }
