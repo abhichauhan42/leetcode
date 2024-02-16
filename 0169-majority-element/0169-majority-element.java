@@ -1,25 +1,24 @@
+import java.util.HashMap;
+import java.util.Map;
+
 class Solution {
     public int majorityElement(int[] nums) {
-        
-        Arrays.sort(nums);
-        int maxoccurence=0;
-        int majorityelement=0;
-        for(int i=0;i<nums.length;i++){
-            int current=nums[i];
-            int j=i+1;
-            while(j<nums.length && nums[j]==current){
-                j++;
-            }
-            
-            int currentoccurence=j-i;
-            if(currentoccurence>maxoccurence){
-                majorityelement=current;
-                maxoccurence=currentoccurence;
-            }
-            i=j-1;
-            
+        Map<Integer, Integer> countMap = new HashMap<>();
+
+        for (int num : nums) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
         }
-        return majorityelement;
-        
+
+        int majorityElement = 0;
+        int maxOccurrences = 0;
+
+        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
+            if (entry.getValue() > maxOccurrences) {
+                majorityElement = entry.getKey();
+                maxOccurrences = entry.getValue();
+            }
+        }
+
+        return majorityElement;
     }
 }
