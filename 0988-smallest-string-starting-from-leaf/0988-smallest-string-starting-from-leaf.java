@@ -14,30 +14,27 @@
  * }
  */
 class Solution {
-     private void dfs(TreeNode node, StringBuilder current, StringBuilder smallest) {
+     private String dfs(TreeNode node, String current) {
         if (node == null)
-            return;
+            return null;
 
-        current.append((char) ('a' + node.val));
+        current = (char) ('a' + node.val) + current;
 
         if (node.left == null && node.right == null) { // Leaf node
-            current.reverse(); // Reverse the current string to get the string from leaf to root
-            String currentString = current.toString();
-            if (smallest.length() == 0 || currentString.compareTo(smallest.toString()) < 0) {
-                smallest.setLength(0);
-                smallest.append(currentString);
-            }
-            current.reverse(); // Re-reverse the current string to maintain the original order
-        } else {
-            dfs(node.left, current, smallest);
-            dfs(node.right, current, smallest);
+            return current;
         }
 
-        current.deleteCharAt(current.length() - 1); // Backtrack
+        String leftSmallest = dfs(node.left, current);
+        String rightSmallest = dfs(node.right, current);
+
+        if (leftSmallest == null)
+            return rightSmallest;
+        if (rightSmallest == null)
+            return leftSmallest;
+
+        return leftSmallest.compareTo(rightSmallest) < 0 ? leftSmallest : rightSmallest;
     }
     public String smallestFromLeaf(TreeNode root) {
-        StringBuilder smallest = new StringBuilder();
-        dfs(root, new StringBuilder(), smallest);
-        return smallest.toString();
+        return dfs(root, "");
     }
 }
