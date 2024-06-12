@@ -9,32 +9,35 @@
  * }
  */
 class Solution {
-    private ListNode sortedMerge(ListNode a, ListNode b) {
+     ListNode sortedMerge(ListNode a, ListNode b) {
         if (a == null) return b;
         if (b == null) return a;
 
+        ListNode result;
         if (a.val <= b.val) {
-            a.next = sortedMerge(a.next, b);
-            return a;
+            result = a;
+            result.next = sortedMerge(a.next, b);
         } else {
-            b.next = sortedMerge(a, b.next);
-            return b;
+            result = b;
+            result.next = sortedMerge(a, b.next);
         }
+        return result;
     }
-
-    private ListNode getMiddle(ListNode head) {
-        if (head == null) return null;
+    ListNode getMiddle(ListNode head) {
+        if (head == null) return head;
 
         ListNode slow = head, fast = head.next;
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+        while (fast != null) {
+            fast = fast.next;
+            if (fast != null) {
+                slow = slow.next;
+                fast = fast.next;
+            }
         }
         return slow;
     }
-
     public ListNode sortList(ListNode head) {
-        if (head == null || head.next == null) return head;
+         if (head == null || head.next == null) return head;
 
         ListNode middle = getMiddle(head);
         ListNode nextOfMiddle = middle.next;
